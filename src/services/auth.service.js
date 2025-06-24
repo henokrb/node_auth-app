@@ -131,7 +131,8 @@ const passReset = async (email) => {
   return userService.normalize(user);
 };
 
-// const passResetConfirm = async (accessToken, newPass, newPassConfirmation) => {
+// const passResetConfirm = async (accessToken, newPass,
+// newPassConfirmation) => {
 //   const errors = {
 //     accessToken: checkRequired(accessToken, 'user id'),
 //     newPass: validatePassword(newPass),
