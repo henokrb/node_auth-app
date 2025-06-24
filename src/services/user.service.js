@@ -13,9 +13,20 @@ const getById = async (id) => {
   return User.findOne({ where: { id } });
 };
 
+// const getByAccessToken = async (accessToken) => {
+//   const { id } = await jwtService.verify(accessToken);
+//   const user = await getById(id);
+
+//   return user;
+// };
 const getByAccessToken = async (accessToken) => {
-  const { id } = await jwtService.verify(accessToken);
-  const user = await getById(id);
+  const userData = await jwtService.verify(accessToken);
+
+  if (!userData || !userData.id) {
+    return null;
+  }
+
+  const user = await getById(userData.id);
 
   return user;
 };

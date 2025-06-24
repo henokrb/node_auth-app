@@ -5,14 +5,21 @@ const noAuthMiddleware = (req, res, next) => {
   const authorization = req.headers['authorization'] || '';
   const [, token] = authorization.split(' ');
 
-  if (authorization || token) {
-    throw ApiError.forbidden();
-  }
+  // if (authorization || token) {
+  //   throw ApiError.forbidden();
+  // }
 
-  const userData = jwtService.verify(token);
+  // const userData = jwtService.verify(token);
 
-  if (userData) {
-    throw ApiError.forbidden();
+  // if (userData) {
+  //   throw ApiError.forbidden();
+  // }
+  if (token) {
+    const userData = jwtService.verify(token);
+
+    if (userData) {
+      throw ApiError.forbidden();
+    }
   }
 
   next();

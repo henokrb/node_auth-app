@@ -49,7 +49,7 @@ const activate = async (activationToken) => {
   }
 
   user.activationToken = null;
-  user.save();
+  await user.save();
 
   return user;
 };
@@ -131,9 +131,39 @@ const passReset = async (email) => {
   return userService.normalize(user);
 };
 
+// const passResetConfirm = async (accessToken, newPass, newPassConfirmation) => {
+//   const errors = {
+//     accessToken: checkRequired(accessToken, 'user id'),
+//     newPass: validatePassword(newPass),
+//     newPassConfirmation: checkRequired(
+//       newPassConfirmation,
+//       'new password confirmation',
+//     ),
+//   };
+
+//   if (errors.userId || errors.newPassConfirmation || errors.newPass) {
+//     throw ApiError.badRequest('bad request', errors);
+//   }
+
+//   const user = await userService.getByAccessToken(accessToken);
+
+//   if (!user) {
+//     throw ApiError.notFound();
+//   }
+
+//   if (!(newPass === newPassConfirmation)) {
+//     throw ApiError.badRequest('entered passwords are not equal');
+//   }
+
+//   user.password = await bcrypt.hash(newPass, 10);
+//   await user.save();
+
+//   return user;
+// };
+
 const passResetConfirm = async (accessToken, newPass, newPassConfirmation) => {
   const errors = {
-    accessToken: checkRequired(accessToken, 'user id'),
+    accessToken: checkRequired(accessToken, 'accessToken'),
     newPass: validatePassword(newPass),
     newPassConfirmation: checkRequired(
       newPassConfirmation,
@@ -141,7 +171,7 @@ const passResetConfirm = async (accessToken, newPass, newPassConfirmation) => {
     ),
   };
 
-  if (errors.userId || errors.newPassConfirmation || errors.newPass) {
+  if (errors.accessToken || errors.newPassConfirmation || errors.newPass) {
     throw ApiError.badRequest('bad request', errors);
   }
 
@@ -156,7 +186,7 @@ const passResetConfirm = async (accessToken, newPass, newPassConfirmation) => {
   }
 
   user.password = await bcrypt.hash(newPass, 10);
-  user.save();
+  await user.save();
 
   return user;
 };
